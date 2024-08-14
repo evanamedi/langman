@@ -5,7 +5,7 @@ from .manager import Manager
 from .data_handler import DataHandler
 
 def main():
-    command_list = ["add", "remove", "list", "update", "open"]
+    command_list = ["   add", "remove", "list", "update", "open"]
     if len(sys.argv) < 2:
         print("\nCommand Options:")
         commands = ""
