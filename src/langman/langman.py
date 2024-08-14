@@ -17,8 +17,8 @@ def main():
     manager = Manager(data_handler)
 
     commands = {
-        "add": lambda: add_(manager, sys.argv[2]) if len(sys.argv) > 2 else print("Provide a name to remove"),
-        "remove": lambda: remove_(manager, sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else print("provide an item type and name")),
+        "remove": lambda: add_(manager, sys.argv[2]) if len(sys.argv) > 2 else print("Provide a name to remove"),
+        "add": lambda: remove_(manager, sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else print("provide an item type and name")),
         "list": lambda: list_(manager),
         "update": update,
         "open": open_data_file
