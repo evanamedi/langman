@@ -1,69 +1,34 @@
-import subprocess
 import sys
-import os
-from pathlib import Path
+from .commands import add_, remove_, list_, open_data_file
+from .update import update
+from .manager import Manager
+from .data_handler import DataHandler
 
 def main():
+    command_list = ["add", "remove", "list", "update", "open"]
     if len(sys.argv) < 2:
-        print("Usage: langman <command> [optionssssssssss]")
+        print("Command Options:\n,")
+        print(command_list)
         return
 
     command = sys.argv[1]
+    
+    data_handler = DataHandler('data.json')
+    manager = Manager(data_handler)
 
-    if command == "remove":
-        print("Remove command not yet implemented.")
-        return
-
-    if command == "add":
-        print("Add command not yet implemented.")
-        return
-
-    if command == "list":
-        print("List command not yet implemented.")
-        return
-
-    if command == "update":
-        update()
-        return
-
-    print(f"Unknown command: {command}")
-
-def update():
-    """
-    Pull the latest updates from the repository and reinstall the package.
-    """
-    try:
-        # Determine the installation directory
-        install_dir = Path.home() / ".langman"
-
-        # Path to the virtual environment's Python executable
-        venv_python = install_dir / "venv/bin/python"
-
-        if not venv_python.exists():
-            print("Virtual environment not found. Please set up the venv.")
-            return
-
-        # Run the git pull command to get the latest updates
-        os.chdir(install_dir)
-        result = subprocess.run(["git", "pull"], check=True, text=True, capture_output=True)
-        
-        # Check if updates were actually pulled
-        if "Already up to date." not in result.stdout:
-            print("Updates were pulled successfully!")
-            print(result.stdout)
-
-            # Automatically reinstall the package using the venv's Python
-            print("Reinstalling the package to apply updates...")
-            subprocess.run([venv_python, "-m", "pip", "install", "-e", "."], check=True)
-            print("Package reinstalled successfully.")
-        else:
-            print("Already up to date. No changes were made.")
-
-        print("Langman Updated. If there were updates, restart your terminal to apply changes.")
-    except subprocess.CalledProcessError as e:
-        print(f"Failed to update: {e}")
-    except Exception as e:
-        print(f"An error occurred: {e}")
+    commands = {
+        "add": lambda: add_(manager, sys.argv[2]) if len(sys.argv) > 2 else print("Provide a name to remove"),
+        "remove": lambda: remove_(manager, sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else print("provide an item type and name")),
+        "list": lambda: list_(manager),
+        "update": update,
+        "open": open_data_file
+    }
+    
+    command_func = commands.get(command)
+    if command_func:
+        command_func()
+    else:
+        print(f"Unknown command: {command}")
 
 if __name__ == "__main__":
     main()
