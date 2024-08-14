@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 import subprocess
+import os
+from pathlib import Path
 from .manager import Manager
 from .data_handler import DataHandler
 import sys
@@ -34,10 +36,16 @@ def update():
     pull latest update from repository
     """
     try:
+        install_dir = Path(__file__).resolve().parent.parent
+        os.chdir(install_dir)
+        
+        
         subprocess.run(["git", "pull"], check=True)
         print("Langman Updated. Restart your terminal to apply changes")
     except subprocess.CalledProcessError as e:
         print(f"Failed to update: {e}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
     main()
