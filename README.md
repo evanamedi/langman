@@ -13,7 +13,7 @@ curl -fsSL https://raw.githubusercontent.com/evanamedi/langman/main/install.sh |
 
 #### Using wget
 ```bash
-wget -qO- https://raw>githubusercontent.com/evanamedi/langman/main/install.sh | bash
+wget -qO- https://raw.githubusercontent.com/evanamedi/langman/main/install.sh | bash
 ```
 
 ## Usage
