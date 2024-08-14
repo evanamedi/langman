@@ -39,16 +39,12 @@ def update():
         # Determine the installation directory
         install_dir = Path(__file__).resolve().parent.parent
 
-        # Path to the virtual environment's activation script
-        activate_script = install_dir / "venv/bin/activate"
+        # Path to the virtual environment's Python executable
+        venv_python = install_dir / "venv/bin/python"
 
-        if not activate_script.exists():
+        if not venv_python.exists():
             print("Virtual environment not found. Please set up the venv.")
             return
-
-        # Activate the virtual environment
-        activate_command = f"source {activate_script}"
-        subprocess.run(activate_command, shell=True, executable="/bin/bash")
 
         # Run the git pull command
         os.chdir(install_dir)
@@ -59,7 +55,7 @@ def update():
 
             # Reinstall the package if there were updates
             print("Reinstalling the package to apply updates...")
-            subprocess.run([str(install_dir / "venv/bin/pip"), "install", "-e", "."], check=True)
+            subprocess.run([venv_python, "-m", "pip", "install", "-e", "."], check=True)
             print("Package reinstalled successfully.")
         else:
             print("Already up to date.")
