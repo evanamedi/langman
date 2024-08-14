@@ -7,11 +7,11 @@ from .data_handler import DataHandler
 def main():
     command_list = ["add", "remove", "list", "update", "open"]
     if len(sys.argv) < 2:
-        print("Command Options:\n,")
+        print("\nCommand Options:")
         commands = ""
         for command in command_list:
             commands += " " + command
-        print (commands)
+        print (f"{commands}\n")
         return
 
     command = sys.argv[1]
