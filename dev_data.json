@@ -1,0 +1,11 @@
+{
+	"Python": {
+		"name": "Python",
+		"keywords": ["def", "import", "class"],
+		"standard_library": ["os", "sys", "json"]
+	},
+	"MyProgram": {
+		"name": "MyProgram",
+		"version": "1.0"
+	}
+}
