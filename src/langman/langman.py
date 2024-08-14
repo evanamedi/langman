@@ -41,6 +41,7 @@ def update():
         
         
         subprocess.run(["git", "pull"], check=True)
+        print("Langman has been updated!")
         print("Langman Updated. Restart your terminal to apply changes")
     except subprocess.CalledProcessError as e:
         print(f"Failed to update: {e}")
