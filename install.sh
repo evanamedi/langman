@@ -14,8 +14,12 @@ mkdir -p "$INSTALL_DIR"
 
 # Clone the repo or download the necessary files (if not already done)
 cd "$INSTALL_DIR"
-if [ ! -d "$INSTALL_DIR/langman" ]; then
-    git clone https://github.com/evanamedi/langman.git .
+if [ ! -f setup.py ]; then
+    if [ ! -d "$INSTALL_DIR/langman" ]; then
+        git clone https://github.com/evanamedi/langman.git .
+    else
+        cd langman
+    fi
 fi
 
 # Set up a Python virtual environment in the installation directory
@@ -27,14 +31,8 @@ source "$VENV_DIR/bin/activate"
 # Navigate to the directory containing setup.py
 cd "$INSTALL_DIR"
 
-# Check if setup.py exists before attempting to install
-if [ ! -f setup.py ]; then
-    echo "Error: setup.py not found in the current directory."
-    exit 1
-fi
-
 # Install the package in the virtual environment
-pip install .
+pip install "$INSTALL_DIR"
 
 # Write the wrapper script in ~/bin to run the command within the venv
 cat <<EOL > "$WRAPPER_SCRIPT"
