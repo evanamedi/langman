@@ -8,7 +8,7 @@ import sys
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: langman <command> [options]")
+        print("Usage: langman <command> [optionssss]")
         return
 
     command = sys.argv[1]
