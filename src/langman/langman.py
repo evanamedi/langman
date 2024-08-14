@@ -30,18 +30,11 @@ def main():
 
 def update():
     """
-    Pull the latest updates from the repository and apply changes.
+    Pull the latest updates from the repository and reinstall the package.
     """
     try:
         # Determine the installation directory
         install_dir = Path(__file__).resolve().parent.parent
-
-        # Path to the virtual environment's Python executable
-        venv_python = install_dir / "venv/bin/python"
-
-        if not venv_python.exists():
-            print("Virtual environment not found. Please set up the venv.")
-            return
 
         # Run the git pull command to get the latest updates
         os.chdir(install_dir)
@@ -53,9 +46,14 @@ def update():
             print(result.stdout)
 
             # Automatically reinstall the package using the venv's Python
-            print("Reinstalling the package to apply updates...")
-            subprocess.run([venv_python, "-m", "pip", "install", "-e", "."], check=True)
-            print("Package reinstalled successfully.")
+            venv_python = install_dir / "venv/bin/python"
+            if venv_python.exists():
+                print("Reinstalling the package to apply updates...")
+                subprocess.run([venv_python, "-m", "pip", "install", "-e", "."], check=True)
+                print("Package reinstalled successfully.")
+            else:
+                print("Virtual environment not found. Please set up the venv to apply changes.")
+
         else:
             print("Already up to date. No changes were made.")
 
