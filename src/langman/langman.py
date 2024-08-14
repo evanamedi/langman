@@ -38,15 +38,20 @@ def update():
     try:
         # Determine the installation directory
         install_dir = Path(__file__).resolve().parent.parent
-        os.chdir(install_dir)
 
-        # Ensure the virtual environment is activated
-        venv_activate = install_dir / "venv/bin/activate"
-        if not venv_activate.exists():
+        # Path to the virtual environment's activation script
+        activate_script = install_dir / "venv/bin/activate"
+
+        if not activate_script.exists():
             print("Virtual environment not found. Please set up the venv.")
             return
 
+        # Activate the virtual environment
+        activate_command = f"source {activate_script}"
+        subprocess.run(activate_command, shell=True, executable="/bin/bash")
+
         # Run the git pull command
+        os.chdir(install_dir)
         result = subprocess.run(["git", "pull"], check=True, text=True, capture_output=True)
         if "Already up to date." not in result.stdout:
             print("Updates were pulled successfully!")
