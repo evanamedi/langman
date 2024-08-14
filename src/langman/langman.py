@@ -8,7 +8,10 @@ def main():
     command_list = ["add", "remove", "list", "update", "open"]
     if len(sys.argv) < 2:
         print("Command Options:\n,")
-        print(command_list)
+        commands = ""
+        for command in command_list:
+            commands += " " + command
+        print (commands)
         return
 
     command = sys.argv[1]
