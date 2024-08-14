@@ -1,14 +1,11 @@
-#!/usr/bin/env python3
 import subprocess
+import sys
 import os
 from pathlib import Path
-from .manager import Manager
-from .data_handler import DataHandler
-import sys
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: langman <command> [optionssss]")
+        print("Usage: langman <command> [options]")
         return
 
     command = sys.argv[1]
@@ -24,13 +21,13 @@ def main():
     if command == "list":
         print("List command not yet implemented.")
         return
-    
+
     if command == "update":
         update()
         return
 
     print(f"Unknown command: {command}")
-    
+
 def update():
     """
     Pull the latest updates from the repository and apply changes.
@@ -46,26 +43,27 @@ def update():
             print("Virtual environment not found. Please set up the venv.")
             return
 
-        # Run the git pull command
+        # Run the git pull command to get the latest updates
         os.chdir(install_dir)
         result = subprocess.run(["git", "pull"], check=True, text=True, capture_output=True)
+        
+        # Check if updates were actually pulled
         if "Already up to date." not in result.stdout:
             print("Updates were pulled successfully!")
             print(result.stdout)
 
-            # Reinstall the package if there were updates
+            # Automatically reinstall the package using the venv's Python
             print("Reinstalling the package to apply updates...")
             subprocess.run([venv_python, "-m", "pip", "install", "-e", "."], check=True)
             print("Package reinstalled successfully.")
         else:
-            print("Already up to date.")
+            print("Already up to date. No changes were made.")
 
-        print("Langman Updated. Restart your terminal to apply changes.")
+        print("Langman Updated. If there were updates, restart your terminal to apply changes.")
     except subprocess.CalledProcessError as e:
         print(f"Failed to update: {e}")
     except Exception as e:
         print(f"An error occurred: {e}")
-
 
 if __name__ == "__main__":
     main()
