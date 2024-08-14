@@ -5,7 +5,7 @@ from pathlib import Path
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: langman <command> [optionssss]")
+        print("Usage: langman <command> [options]")
         return
 
     command = sys.argv[1]
@@ -34,7 +34,14 @@ def update():
     """
     try:
         # Determine the installation directory
-        install_dir = Path(__file__).resolve().parent.parent
+        install_dir = Path.home() / ".langman"
+
+        # Path to the virtual environment's Python executable
+        venv_python = install_dir / "venv/bin/python"
+
+        if not venv_python.exists():
+            print("Virtual environment not found. Please set up the venv.")
+            return
 
         # Run the git pull command to get the latest updates
         os.chdir(install_dir)
@@ -46,14 +53,9 @@ def update():
             print(result.stdout)
 
             # Automatically reinstall the package using the venv's Python
-            venv_python = install_dir / "venv/bin/python"
-            if venv_python.exists():
-                print("Reinstalling the package to apply updates...")
-                subprocess.run([venv_python, "-m", "pip", "install", "-e", "."], check=True)
-                print("Package reinstalled successfully.")
-            else:
-                print("Virtual environment not found. Please set up the venv to apply changes.")
-
+            print("Reinstalling the package to apply updates...")
+            subprocess.run([venv_python, "-m", "pip", "install", "-e", "."], check=True)
+            print("Package reinstalled successfully.")
         else:
             print("Already up to date. No changes were made.")
 
