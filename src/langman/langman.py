@@ -5,7 +5,7 @@ from pathlib import Path
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: langman <command> [options]")
+        print("Usage: langman <command> [optionsss]")
         return
 
     command = sys.argv[1]
